@@ -1,3 +1,4 @@
+//site: https://medium.com/@keirish15/acs-712-20a-current-sensor-interfacing-with-esp-32-5a3d240acfe9
 #define currentpin 4; //pino onde o sensor esta conectado no esp32
 
 //valores de resistencia para o esp32 nao queimar
