@@ -11,7 +11,7 @@ double current = 0;
 const double VCC = 3.3;          // Tensão de referência do ADC do ESP32
 const int ADC_RES = 4095;        // Resolução ADC 12 bits
 const double SENSITIVITY = 0.185; // Sensibilidade do ACS712-5A (V/A)
-const double OFFSET = 1.31;   // Valor típico de saída do sensor sem corrente (meio da tensão de referência)
+const double OFFSET = 0.043;   // Valor típico de saída do sensor sem corrente (meio da tensão de referência)
 
 void setup() {
   Serial.begin(9600);
