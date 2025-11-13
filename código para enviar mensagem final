@@ -1,0 +1,37 @@
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+const char* ssid = "uaifai-tiradentes";
+const char* password = "bemvindoaocesar";
+const char* phoneNumber = "+558192417746";
+const char* apiKey = "3953632";
+
+bool mensagemEnviada = false;
+
+void setup() {
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+  // Mensagem opcional no início
+  sendMessage("Olá! Mensagem enviada do meu ESP32 via CallMeBot 🚀");
+}
+
+void loop() {
+  if (!mensagemEnviada) {
+    sendMessage("Gato de energia detectado!");
+    mensagemEnviada = true;
+  }
+}
+
+void sendMessage(String message) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    message.replace(" ", "%20");
+    String url = "https://api.callmebot.com/whatsapp.php?phone=" + String(phoneNumber) +
+                 "&text=" + message + "&apikey=" + String(apiKey);
+    http.begin(url);
+    http.GET();
+    http.end();
+  }
+}
