@@ -4,8 +4,8 @@
 const char* ssid = "uaifai-tiradentes";
 const char* password = "bemvindoaocesar";
 
-const char* phoneNumber = "+558192417746";
-const char* apiKey = "3953632";
+const char* phoneNumber = "+558193142442";
+const char* apiKey = "7722631";
 
 #define RX2_PIN 16   // ajuste se necessário
 #define TX2_PIN 17
@@ -57,7 +57,7 @@ void loop() {
     Serial.println(I1, 3);
 
     // ---- DETECÇÃO DO GATO ----
-    if (I1 > 0.500 && !alertaEnviado) {
+    if (I1 > 0.300 && !alertaEnviado) {
       sendMessage("Na área da Cesar, está tendo um possível gato de energia");
       alertaEnviado = true;
     }
