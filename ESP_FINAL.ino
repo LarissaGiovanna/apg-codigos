@@ -3,7 +3,7 @@
 
 const char* ssid = "uaifai-tiradentes";
 const char* password = "bemvindoaocesar";
-
+                                                                                                                                                          
 const char* phoneNumber = "+558193142442";
 const char* apiKey = "7722631";
 
@@ -12,9 +12,35 @@ const char* apiKey = "7722631";
 
 bool alertaEnviado = false;
 
+// --- Pinos da LED RGB (cátodo comum) ---
+const int LED_R = 25;
+const int LED_G = 26;
+// const int LED_B = 27; // não usado neste caso
+
+// limites
+const float LIMITE_ALERTA = 0.500; // envia alerta se I1 > 0.500 A
+const float LIMITE_RESET  = 0.300; // reseta alerta se I1 < 0.300 A
+
+void ledVerde() {
+  digitalWrite(LED_R, LOW);
+  digitalWrite(LED_G, HIGH);
+}
+void ledVermelha() {
+  digitalWrite(LED_R, HIGH);
+  digitalWrite(LED_G, LOW);
+}
+
 void setup() {
   Serial.begin(115200);
   Serial2.begin(9600, SERIAL_8N1, RX2_PIN, TX2_PIN);
+
+  // configurar pinos do LED
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  // pinMode(LED_B, OUTPUT);
+
+  // inicia verde
+  ledVerde();
 
   // esvaziar qualquer lixo que venha do Arduino enquanto o ESP inicializa
   delay(200);
@@ -57,14 +83,16 @@ void loop() {
     Serial.println(I1, 3);
 
     // ---- DETECÇÃO DO GATO ----
-    if (I1 > 0.300 && !alertaEnviado) {
+    if (I1 > LIMITE_ALERTA && !alertaEnviado) {
       sendMessage("Na área da Cesar, está tendo um possível gato de energia");
       alertaEnviado = true;
+      ledVermelha(); // muda LED para vermelho quando enviar alerta
     }
 
     // Reseta alerta se corrente cair bastante (evita spam)
-    if (I1 < 0.300) {
+    if (I1 < LIMITE_RESET && alertaEnviado) {
       alertaEnviado = false;
+      ledVerde(); // volta para verde
     }
   }
 
